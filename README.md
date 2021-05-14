@@ -119,15 +119,15 @@ $ kubectl logs -f $(kubectl get po -n kube-system | egrep -o 'alb-ingress-contro
 
 # Backend Spring-boot application deployment
 First clone project from below repo, and follow README.md file for next steps
-```
-"https://github.com/gookarthik/springboot-angular-kubernetes/tree/master"
-```
+
+https://github.com/gookarthik/springboot-angular-kubernetes/tree/master
+
 
 # Frontend Anfular application deployment
 First clone project from below repo, and follow README.md file for next steps
-```
-"https://github.com/gookarthik/angular8-crud-demo/tree/master"
-```
+
+https://github.com/gookarthik/angular8-crud-demo/tree/master
+
 
 # SSL
 Create a SSL from Certificate Manager Service 'vvcekarthik.tk'
