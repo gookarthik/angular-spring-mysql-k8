@@ -123,7 +123,7 @@ First clone project from below repo, and follow README.md file for next steps
 https://github.com/gookarthik/springboot-angular-kubernetes/tree/master
 
 
-# Frontend Anfular application deployment
+# Frontend Angular application deployment
 First clone project from below repo, and follow README.md file for next steps
 
 https://github.com/gookarthik/angular8-crud-demo/tree/master
