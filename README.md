@@ -155,3 +155,8 @@ Routing policy = Simple
 # Website
 
 https://angular.vvcekarthik.tk/
+
+# Source
+https://www.youtube.com/watch?v=aPzpsfQtlKY
+https://github.com/shameed1910/angular8-crud-demo
+https://github.com/shameed1910/springboot-angular-kubernetes
