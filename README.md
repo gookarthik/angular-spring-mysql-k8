@@ -136,6 +136,19 @@ Create a Hostzone called 'vvcekarthik.tk'
 
 Create Record set for SSL
 ```
-_bf170d3fe64ea1823d2d17dcbd54d7b4.vvcekarthik.tk	CNAME	Simple	-	
-_1fe19c8347b68db4e78b9086727d5531.zzxlnyslwt.acm-validations.aws
+Record name = _bf170d3fe64ea1823d2d17dcbd54d7b4.vvcekarthik.tk
+Record type = CNAME
+Value = _1fe19c8347b68db4e78b9086727d5531.zzxlnyslwt.acm-validations.aws
+Alias = No
+TTL (seconds) = 300
+Routing policy = Simple
+```
+```
+Record name = angular.vvcekarthik.tk
+Record type = A
+Value = dualstack.6ad0ef5b-default-ingressus-ea9e-1111810599.us-east-1.elb.amazonaws.com.
+Alias = Yes
+TTL (seconds) = -
+Routing policy = Simple
+```
 
