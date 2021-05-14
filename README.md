@@ -1,6 +1,7 @@
 # After downloading aws-cli
-Access Key ID: AKIAYZQ2XOIMAX2SSAX7
-Secret Access Key: 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
+Access Key ID: XXXXXXXXXXXXXXXXXXXX
+
+Secret Access Key: XXXXXXXXXXXXXXXXXXXX
 
 $ sudo apt update 
 
@@ -8,8 +9,8 @@ $ sudo apt install awscli
 
 $ aws configure
 ```
-AWS Access Key ID [None]: AKIAYZQ2XOIMAX2SSAX7
-AWS Secret Access Key [None]: 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
+AWS Access Key ID [None]: XXXXXXXXXXXXXXXXX
+AWS Secret Access Key [None]: XXXXXXXXXXXXXXXXXXXX
 Default region name [None]: us-east-1
 Default output format [None]: json
 ```
