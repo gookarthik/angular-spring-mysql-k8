@@ -84,15 +84,18 @@ eksctl create iamserviceaccount \
     --approve
 ```
 # Verify using eksctl cli
-# Get IAM Service Account
+ Get IAM Service Account
+ --
 $ eksctl  get iamserviceaccount --cluster eksdemo1
 
 # Verify k8s Service Account
-# Describe Service Account alb-ingress-controller 
+Describe Service Account alb-ingress-controller 
+--
 $ kubectl describe sa alb-ingress-controller -n kube-system
 
 # Deploy ALB Ingress Controller
-# Deploy ALB Ingress Controller
+Deploy ALB Ingress Controller
+--
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/master/docs/examples/alb-ingress-controller.yaml
 
 # Verify Deployment
@@ -111,7 +114,8 @@ spec:
         - --cluster-name=eksdemo1
 ```
 # Verify our ALB Ingress Controller is running
-# Verify if alb-ingress-controller pod is running
+Verify if alb-ingress-controller pod is running
+--
 $ kubectl get pods -n kube-system
 
 # Verify logs
@@ -153,26 +157,83 @@ TTL (seconds) = -
 Routing policy = Simple
 ```
 
-Creating Dashboard for k8
+# Creating Dashboard for k8
+Deploy the Kubernetes dashboard
 --
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.5/aio/deploy/recommended.yaml
 
+Create an eks-admin service account and cluster role binding
+--
+$ vi eks-admin-service-account.yaml
+```
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: eks-admin
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: eks-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: eks-admin
+  namespace: kube-system
+```
+$ kubectl apply -f eks-admin-service-account.yaml
 
+Connect to the dashboard
+--
+$ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}')
+```
+ubuntu@ip-172-31-7-153:~/karthik-use$ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}')
+Name:         eks-admin-token-kwqcb
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name: eks-admin
+              kubernetes.io/service-account.uid: 80485f0e-6f6a-4335-ae8d-0ccec40c9587
 
+Type:  kubernetes.io/service-account-token
 
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6InVtWVNra3BYVmV2UDZ6SmEwMDY3d1JKSjZMMHpKUEFqSXJrMy10SDRrQ1kifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJla3MtYWRtaW4tdG9rZW4ta3dxY2IiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZWtzLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiODA0ODVmMGUtNmY2YS00MzM1LWFlOGQtMGNjZWM0MGM5NTg3Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVrcy1hZG1pbiJ9.K6FANlU3HDhq8w5fcAItsoE81-OoqedUxjTF8Cs7hcCVvRjqAB4UuzrJfKjiJz_Ypcv27sCWiY9y_N5P21YN0-lb9nQwvMoooAs-y2TLkztdJTmY7QiqLmX4OjLAhESeC0upvK_4a5HJwUoxzV7HVDXRiYqS_ySGvfOmliqUB5xiVypvCgSD5xJ7U_jKnKdcRoxtg5SROLP6Wud8GVIsgFNHtfC-M2oikRhyj0aIRllEeK82Yr-JewwFWWw0N0C5Wfo8zi9w2gUdx6ZlNB-4pYvijHNuXxRqXpKqIyOekNgaIVnztg923XG3AHJAQlfZ1hncIpcA8klLF1yiSb6KKg
+ubuntu@ip-172-31-7-153:~/karthik-use$
+```
+$ kubectl get ns
 
+$ kubectl -n kubernetes-dashboard get svc
 
-
-
-
-
-
-
-
-
-
-
-
-
+$ kubectl -n kubernetes-dashboard edit svc kubernetes-dashboard
+ ```
+ Here replace ClusterIP  to  NodePort
+ ```
+ $ kubectl -n kubernetes-dashboard get svc
+ ```
+ ubuntu@ip-172-31-7-153:~/karthik-use$ kubectl get nodes -o wide
+NAME                             STATUS   ROLES    AGE   VERSION               INTERNAL-IP      EXTERNAL-IP      OS-IMAGE         KERNEL-VERSION                  CONTAINER-RUNTIME
+ip-192-168-12-137.ec2.internal   Ready    <none>   28h   v1.16.15-eks-ad4801   192.168.12.137   34.200.242.167   Amazon Linux 2   4.14.231-173.361.amzn2.x86_64   docker://19.3.13
+ip-192-168-61-84.ec2.internal    Ready    <none>   28h   v1.16.15-eks-ad4801   192.168.61.84    3.83.89.187      Amazon Linux 2   4.14.231-173.361.amzn2.x86_64   docker://19.3.13
+ubuntu@ip-172-31-7-153:~/karthik-use$
+```
+```
+ubuntu@ip-172-31-7-153:~/karthik-use$ kubectl -n kubernetes-dashboard get svc
+NAME                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)         AGE
+dashboard-metrics-scraper   ClusterIP   10.100.94.72    <none>        8000/TCP        22m
+kubernetes-dashboard        NodePort    10.100.54.217   <none>        443:30481/TCP   6m2s
+```
+# To Access Dashboard
+```
+https://3.83.89.187:30481/
+```
+Give the above token and click on login
 
 
 # Website
