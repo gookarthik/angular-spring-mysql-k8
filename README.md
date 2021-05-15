@@ -152,6 +152,29 @@ Alias = Yes
 TTL (seconds) = -
 Routing policy = Simple
 ```
+
+Creating Dashboard for k8
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Website
 
 https://angular.vvcekarthik.tk/
