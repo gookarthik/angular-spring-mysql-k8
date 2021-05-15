@@ -54,7 +54,7 @@ eksctl create nodegroup --cluster=eksdemo1 \
                         --appmesh-access \
                         --alb-ingress-access \
 ```
-kubectl get nodes -o wide
+$ kubectl get nodes -o wide
 
 Security Group
 ---
