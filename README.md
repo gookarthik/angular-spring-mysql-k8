@@ -233,7 +233,7 @@ kubernetes-dashboard        NodePort    10.100.54.217   <none>        443:30481/
 ```
 https://3.83.89.187:30481/
 ```
-Give the above token and click on login
+Give the above token and click on sign-in. No need to open any port
 
 
 # Website
