@@ -56,23 +56,32 @@ eksctl create nodegroup --cluster=eksdemo1 \
 ```
 kubectl get nodes -o wide
 
+Security Group
+---
+ Go to 'eksdemo1'. In 'Networking', click on "Cluster security group" [sg-02881eaffdfc6890c]. Edit inbound rules to 'All Traffic'
 
-# List Service Accounts
+List Service Accounts
+---
 $ kubectl get sa -n kube-system
 
-# Create ClusterRole, ClusterRoleBinding & ServiceAccount
+Create ClusterRole, ClusterRoleBinding & ServiceAccount
+---
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/master/docs/examples/rbac-role.yaml
 
-# List Service Accounts
+List Service Accounts
+---
 $ kubectl get sa -n kube-system
 
-# Describe Service Account alb-ingress-controller 
+Describe Service Account alb-ingress-controller 
+---
 $ kubectl describe sa alb-ingress-controller -n kube-system
 
-# Now get the Policy ARN of AdministratorAccess
+Now get the Policy ARN of AdministratorAccess
+---
 arn:aws:iam::aws:policy/AdministratorAccess
 
-# Create an IAM role for the ALB Ingress Controller and attach the role to the service account
+Create an IAM role for the ALB Ingress Controller and attach the role to the service account
+---
 ```
 eksctl create iamserviceaccount \
     --region us-east-1 \
@@ -98,14 +107,17 @@ Deploy ALB Ingress Controller
 --
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/master/docs/examples/alb-ingress-controller.yaml
 
-# Verify Deployment
+Verify Deployment
+---
 $ kubectl get deploy -n kube-system
 
 
-# Edit ALB Ingress Controller Manifest
+Edit ALB Ingress Controller Manifest
+---
 $ kubectl edit deployment.apps/alb-ingress-controller -n kube-system
 
-# Replaced cluster-name with our cluster-name eksdemo1
+Replaced cluster-name with our cluster-name eksdemo1
+---
 ```
 spec:
       containers:
@@ -235,6 +247,31 @@ https://3.83.89.187:30481/
 ```
 Give the above token and click on sign-in. No need to open any port
 
+# Monitoring EKS using CloudWatch Container Insigths
+
+```
+# Sample Role ARN
+arn:aws:iam::180789647333:role/eksctl-eksdemo1-nodegroup-eksdemo-NodeInstanceRole-1FVWZ2H3TMQ2M
+
+# Policy to be associated
+Associate Policy: CloudWatchAgentServerPolicy
+```
+Deploy CloudWatch Agent and Fluentd as DaemonSets
+---
+```
+# Template
+curl -s https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluentd-quickstart.yaml | sed "s/{{cluster_name}}/<REPLACE_CLUSTER_NAME>/;s/{{region_name}}/<REPLACE-AWS_REGION>/" | kubectl apply -f -
+
+# Replaced Cluster Name and Region
+curl -s https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluentd-quickstart.yaml | sed "s/{{cluster_name}}/eksdemo1/;s/{{region_name}}/us-east-1/" | kubectl apply -f -
+
+```
+# Verify
+```
+# List Daemonsets
+kubectl -n amazon-cloudwatch get daemonsets
+```
+Now Open Cloud Watch Service. CloudWatch -> Container Insights -> Performance monitoring
 
 # Website
 
