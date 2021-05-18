@@ -52,7 +52,7 @@ eksctl create nodegroup --cluster=eksdemo1 \
                         --external-dns-access \
                         --full-ecr-access \
                         --appmesh-access \
-                        --alb-ingress-access \
+                        --alb-ingress-access
 ```
 $ kubectl get nodes -o wide
 
