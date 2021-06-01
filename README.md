@@ -29,6 +29,8 @@ $ sudo mv /tmp/eksctl /usr/local/bin
 
 $ eksctl version
 
+# Create Key pair as "kube-demo" in North Verginia Region
+
 # Create EKS Cluster using eksctl
 
 $ eksctl create cluster --name=eksdemo1 --version 1.16 --region=us-east-1 --zones=us-east-1a,us-east-1b --without-nodegroup
